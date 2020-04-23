@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">foovery</string>
+    <string name="map_key" translatable="false">AIzaSyCBPFHjEovFBgGr1YL2sBCp_jbyX15xMlM</string>
+</resources>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "127799963894",
+    "firebase_url": "https://foovery-30d26.firebaseio.com",
+    "project_id": "foovery-30d26",
+    "storage_bucket": "foovery-30d26.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:127799963894:android:9b035eaf58edac9a367cd7",
+        "android_client_info": {
+          "package_name": "com.example.foovery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "127799963894-7kcvasqtg58ea4h4q8bf1rbfue0doa1l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFUs5AtghhctBAVmG22G0iNoUpyYDgQNI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "127799963894-7kcvasqtg58ea4h4q8bf1rbfue0doa1l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
