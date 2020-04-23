@@ -134,17 +134,14 @@ public class orderFoodU extends AppCompatActivity {
                 }
                 int sum=s1+s2+s3+s4+s5+s6+s7+s8+s9+s10;
 
-                Double sumd = new Double(sum);
-                String foodCost = Double.toString(sumd);
                 Intent intent = getIntent();
-                String value = intent.getStringExtra("key");
+                double value = intent.getDoubleExtra("key", 0.0);
                 String value1 = "Delivery Charges = "+value;
                 textView.setText(value1);
-                Double val= Double.parseDouble(value);
-                final double total = sumd+val;
-                final String totalCost = Double.toString(total);
+                final double total = sum+value;
 
-                final  String disp = "Total cost = "+value+" + "+foodCost+" = "+totalCost;
+                final  String disp = "Total cost = "+value+" + "+sum+" = "+total;
+                final double cost = value+sum+total;
 
                 String orderId = System.currentTimeMillis()+"";
                 final String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -152,7 +149,7 @@ public class orderFoodU extends AppCompatActivity {
                         .collection("orders").document(orderId);
                 Map<String, Object> order = new HashMap<>();
                 order.put("uid", userID);
-                order.put("cost", disp);
+                order.put("cost", cost);
                 order.put("ord", list);
                 order.put("Lat",val1.getLatitude());
                 order.put("Lon",val1.getLongitude());
@@ -162,7 +159,7 @@ public class orderFoodU extends AppCompatActivity {
                         Log.d("Order", "onSuccess:user profile is created  for" + userID);
                         Intent intent = new Intent(orderFoodU.this, phoneAuthUser.class);
                         intent.putExtra("key2",disp);
-                        intent.putExtra("key1",totalCost);
+                        intent.putExtra("key1",cost+"");
                         startActivity(intent);
                     }
                 }).addOnFailureListener(new OnFailureListener() {

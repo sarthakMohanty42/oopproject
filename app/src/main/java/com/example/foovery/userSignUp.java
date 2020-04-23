@@ -5,7 +5,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,14 +17,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/*import com.facebook.AccessToken;
+import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;*/
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,6 +37,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,15 +47,15 @@ public class userSignUp extends AppCompatActivity {
     private static final String TAG1 = "FacebookAuthentication";
     EditText name, phoneNumber, emailID, password;
     TextView btnUserSignUp;
-    Button btnAlreadySignIn;
-    Button btnSignOut;
+    TextView btnAlreadySignIn;
+    TextView btnSignOut;
     FirebaseAuth mFirebaseAuth;
     FirebaseFirestore fStore;
     String userID;
-    /*CallbackManager mCallbackManager;
+    CallbackManager mCallbackManager;
     FirebaseAuth.AuthStateListener mAuthStateListener;
-    LoginButton loginButton;
-    AccessTokenTracker mAccessTokenTracker;*/
+    //Button loginButton;
+//    AccessTokenTracker mAccessTokenTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +70,26 @@ public class userSignUp extends AppCompatActivity {
         btnUserSignUp = findViewById(R.id.button5);
         btnAlreadySignIn = findViewById(R.id.button6);
         mFirebaseAuth = FirebaseAuth.getInstance();
-        /*FacebookSdk.sdkInitialize(getApplicationContext());
+        FacebookSdk.sdkInitialize(getApplicationContext());
 
-        loginButton = findViewById(R.id.login_button);
-        loginButton.setReadPermissions("email", "public_profile");
-        mCallbackManager = CallbackManager.Factory.create();
+        //loginButton = findViewById(R.id.login_button);
+        //loginButton.setReadPermissions("email", "public_profile");
+        /*mCallbackManager = CallbackManager.Factory.create();
+
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.example.foovery",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
 
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -114,6 +135,7 @@ public class userSignUp extends AppCompatActivity {
                 public void onClick(View v) {
                     FirebaseAuth.getInstance().signOut();
                     Intent intent = new Intent(userSignUp.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
             });
@@ -232,17 +254,17 @@ public class userSignUp extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser user1){
-        final String email = emailID.getText().toString();
-        String pwd = password.getText().toString();
-        final String nam = name.getText().toString();
-        final String phn = phoneNumber.getText().toString();
         if(user1 != null){
-            userID = mFirebaseAuth.getCurrentUser().getUid();
+            final String em = user1.getEmail();
+            //String pwd = password.getText().toString();
+            final String na = user1.getDisplayName();
+            final String ph = user1.getPhoneNumber();
+            userID = user1.getUid();
             DocumentReference documentReference=fStore.collection("users").document(userID);
             Map<String,Object> user =new HashMap<>();
-            user.put("name",nam);
-            user.put("phone",phn);
-            user.put("email",email);
+            user.put("name",na);
+            user.put("phone",ph);
+            user.put("email",em);
             documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {

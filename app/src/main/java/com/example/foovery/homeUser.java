@@ -88,10 +88,8 @@ public class homeUser extends FragmentActivity implements  OnMapReadyCallback {
                 source.setLongitude(78.4983);
                 double distance=currentLocation.distanceTo(source);
                 distance=distance/1000;
-                final String dist = Double.toString(distance);
-                Toast.makeText(homeUser.this,dist , Toast.LENGTH_SHORT).show();
                 Intent o = new Intent(homeUser.this, orderFoodU.class);
-                o.putExtra("key", dist);
+                o.putExtra("key", distance);
                 o.putExtra("dest",currentLocation);
                 startActivity(o);
             }
@@ -148,10 +146,8 @@ public class homeUser extends FragmentActivity implements  OnMapReadyCallback {
                 source.setLongitude(78.4983);
                 double distance=destination.distanceTo(source);
                 distance=distance/1000;
-                final String dist = Double.toString(distance);
-                Toast.makeText(homeUser.this,dist , Toast.LENGTH_SHORT).show();
                 Intent o = new Intent(homeUser.this, orderFoodU.class);
-                o.putExtra("key", dist);
+                o.putExtra("key", distance);
                 o.putExtra("dest",destination);
                 startActivity(o);
             }

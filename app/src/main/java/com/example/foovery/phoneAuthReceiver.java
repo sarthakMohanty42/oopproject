@@ -42,7 +42,7 @@ public class phoneAuthReceiver extends AppCompatActivity {
         btnPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendVerificationCode();
+                //sendVerificationCode();
                 GlobalVariable.phoneRider=phoneNo.getText().toString();
             }
         });
@@ -139,5 +139,6 @@ public class phoneAuthReceiver extends AppCompatActivity {
         }
     };
 }
+
 
 

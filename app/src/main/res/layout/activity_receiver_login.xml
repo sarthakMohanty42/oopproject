@@ -55,7 +55,7 @@
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="492dp"
+        android:layout_marginTop="496dp"
         android:layout_marginEnd="48dp"
         android:background="@drawable/rounded_button"
         android:gravity="center"
@@ -157,23 +157,19 @@
         app:layout_constraintTop_toBottomOf="@+id/button4" />
 
     <ImageView
-        android:id="@+id/button17"
+        android:id="@+id/login_button"
         android:layout_width="0dp"
-        android:layout_height="56dp"
+        android:layout_height="52dp"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="24dp"
-
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="48dp"
-        android:layout_marginBottom="20dp"
-
-        android:backgroundTint="#fff"
-        android:gravity="center"
-
+        android:background="@drawable/rounded_button_white"
         android:src="@drawable/fb2"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button4" />
+        app:layout_constraintTop_toBottomOf="@+id/button4"
+        app:layout_constraintVertical_bias="0.187" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

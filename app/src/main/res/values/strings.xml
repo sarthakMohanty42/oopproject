@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">foovery</string>
     <string name="map_key" translatable="false">AIzaSyCBPFHjEovFBgGr1YL2sBCp_jbyX15xMlM</string>
+    <string name="facebook_app_id">1166071967065864</string>
+    <string name="fb_login_protocol_scheme">fb1166071967065864</string>
+
 </resources>

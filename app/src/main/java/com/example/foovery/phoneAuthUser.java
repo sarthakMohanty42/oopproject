@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 public class phoneAuthUser extends AppCompatActivity {
     //TextView totalling;
     EditText phoneNo,otp;
-    Button btnPhone,btnOtp;
+    TextView btnPhone,btnOtp;
     FirebaseAuth mAuth;
     String codeSent;
 
