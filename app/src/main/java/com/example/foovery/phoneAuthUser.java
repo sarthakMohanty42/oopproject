@@ -2,10 +2,15 @@ package com.example.foovery;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,130 +19,127 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.PhoneAuthCredential;
-import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.concurrent.TimeUnit;
 
 public class phoneAuthUser extends AppCompatActivity {
-    //TextView totalling;
+
+    private static final int SEND_SMS_PERMISSION_REQUEST_CODE = 0;
+
     EditText phoneNo,otp;
-    TextView btnPhone,btnOtp;
+    Button btnPhone,btnOtp;
     FirebaseAuth mAuth;
-    String codeSent;
+    TextView codeSent;
+    String message;
+    String phoneNumber;
+    String name;
+    String id;
+    TextView total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_auth_user);
-        //totalling =findViewById(R.id.textView9);
+
         phoneNo = findViewById(R.id.editText9);
         otp = findViewById(R.id.editText10);
         btnPhone =findViewById(R.id.button10);
         btnOtp = findViewById(R.id.button11);
+
+        codeSent = findViewById(R.id.textView11);
+        total = findViewById(R.id.textView17);
+
+        double amount = getIntent().getDoubleExtra("key1",0.0);
+        String cost = "Total Amount = "+ amount;
+        total.setText(cost);
+
         mAuth = FirebaseAuth.getInstance();
-        //Intent intent = getIntent();
-        //String value = intent.getStringExtra("key2");
-        //totalling.setText(value);
+        id = getIntent().getStringExtra("key2");
 
         btnPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendVerificationCode();
-                GlobalVariable.phoneUser=phoneNo.getText().toString();
+                FirebaseFirestore.getInstance()
+                        .collection("orders").document(id).update("userPhone",phoneNo.getText().toString());
+                codeSent.setText("You will get the OTP.. Please wait...");
             }
         });
 
         btnOtp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                verifySignInCode();
-
+                sendMessage();
             }
         });
     }
 
-    public void verifySignInCode(){
-        String code = otp.getText().toString();
-        if(code.isEmpty()){
-            otp.setError("please enter the phone number");
-            otp.requestFocus();
-            return;
-        }
-        else {
-            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(codeSent, code);
-            signInWithPhoneAuthCredential(credential);
-        }
-    }
-
-    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+    protected void sendMessage(){
+        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setMessage("Please wait");
+        dialog.setCancelable(false);
+        dialog.show();
+        FirebaseFirestore.getInstance().collection("users")
+                .document(mAuth.getCurrentUser().getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        dialog.dismiss();
+                        if(task.isSuccessful() ){
+                            DocumentSnapshot ds = task.getResult();
+                            name = ds.get("name").toString();
+                            dialog.show();
+                            FirebaseFirestore.getInstance().collection("orders")
+                                    .document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    dialog.dismiss();
+                                    if(task.isSuccessful()) {
+                                        DocumentSnapshot ds1 = task.getResult();
+                                        Order o = ds1.toObject(Order.class);
+                                        o.setId(ds1.getId());
+                                        phoneNumber = o.getRiderPhone();
+                                        message = "Your OTP for Order Id "+ o.getId()+ " is " + o.getOtp2()+ " . You have to deliver order to " + name + " - " + phoneNo.getText();
+                                        if (phoneNumber == null || phoneNumber.length() == 0 || message == null || message.length() == 0) {
+                                            return;
+                                        }
 
-                            ///////////// here you can open a new activity ........
-                            Toast.makeText(phoneAuthUser.this, "Registered ", Toast.LENGTH_SHORT).show();
-                            // GlobalVariable.phoneUser=phoneNo.getText().toString();
-                            Intent i = new Intent(phoneAuthUser.this,Main2Activity.class);
-                            startActivity(i);
+                                        if (ContextCompat.checkSelfPermission(phoneAuthUser.this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
+                                         && ContextCompat.checkSelfPermission(phoneAuthUser.this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+                                            SmsManager smsManager = SmsManager.getDefault();
+                                            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+                                            Toast.makeText(phoneAuthUser.this, "Message Sent!", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(phoneAuthUser.this, Main2Activity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                        else {
+                                            ActivityCompat.requestPermissions(phoneAuthUser.this, new String[]{Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE},
+                                                    SEND_SMS_PERMISSION_REQUEST_CODE);
+                                        }
+                                    }
+                                }
+                            });
 
-
-                        } else {
-                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                // The verification code entered was invalid
-                                Toast.makeText(phoneAuthUser.this, "invalid otp ", Toast.LENGTH_SHORT).show();
-
-                            }
                         }
                     }
                 });
     }
 
-    public void sendVerificationCode(){
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case SEND_SMS_PERMISSION_REQUEST_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-        String phone = phoneNo.getText().toString();
-        if(phone.isEmpty()){
-            phoneNo.setError("please enter the phone number");
-            phoneNo.requestFocus();
-            return;
+                } else {
+                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
-
-        if(phone.length()<13){                                        ////////////// as we need to enter the phone number along with country code so for india +91 ....
-            phoneNo.setError("please enter valid phone number");
-            phoneNo.requestFocus();
-            return;
-        }
-
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                phone,        // Phone number to verify
-                60,                 // Timeout duration
-                TimeUnit.SECONDS,   // Unit of timeout
-                this,               // Activity (for callback binding)
-                mCallbacks);        // OnVerificationStateChangedCallbacks
     }
-
-    PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-        @Override
-        public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-
-        }
-
-        @Override
-        public void onVerificationFailed(@NonNull FirebaseException e) {
-
-        }
-
-        @Override
-        public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-            super.onCodeSent(s, forceResendingToken);
-
-            codeSent = s;            ///////////////////// the code sent to the phone number from app via sms.....
-        }
-    };
 }
+
+

@@ -12,17 +12,17 @@
         android:id="@+id/editText9"
         android:layout_width="0dp"
         android:layout_height="56dp"
-        android:layout_marginTop="248dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="192dp"
+        android:layout_marginEnd="48dp"
         android:backgroundTint="#fff"
         android:ems="10"
         android:hint="Enter phone number(Using +91)"
-        android:inputType="numberSigned"
-        android:layout_marginStart="48dp"
-        android:layout_marginEnd="48dp"
+        android:inputType="phone"
         android:textColor="#fff"
         android:textColorHint="#fff"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.575"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,53 +34,32 @@
         android:layout_marginStart="48dp"
         android:layout_marginEnd="48dp"
         android:background="@drawable/rounded_button"
-        android:text="GET OTP"
+        android:text="SEND OTP"
         android:gravity="center"
         android:textColor="#ffffff"
         android:textColorHint="#fff"
         android:textStyle="bold"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.544"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText9" />
-
-    <EditText
-        android:id="@+id/editText10"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="76dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginEnd="48dp"
-        android:backgroundTint="#fff"
-        android:ems="10"
-        android:hint="Enter the OTP sent"
-        android:inputType="numberSigned"
-        android:textColor="#fff"
-        android:textColorHint="#fff"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.575"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button10" />
 
     <Button
         android:id="@+id/button11"
         android:layout_width="0dp"
         android:layout_height="56dp"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="48dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="48dp"
         android:background="@drawable/rounded_button"
-        android:text="VERIFY"
+        android:text="CONFIRM DELIVERY"
         android:textColor="#ffffff"
         android:textColorHint="#fff"
-        android:textStyle="bold"
         android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.544"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText10"
-        android:onClick="onSend"/>
+        app:layout_constraintTop_toBottomOf="@+id/editText12" />
 
     <ImageView
         android:id="@+id/imageView4"
@@ -92,5 +71,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="52dp"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button10" />
+
+    <EditText
+        android:id="@+id/editText12"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="112dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
+        android:backgroundTint="#fff"
+        android:ems="10"
+        android:hint="Enter OTP"
+        android:inputType="numberSigned"
+        android:textColor="#fff"
+        android:textColorHint="#fff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button10" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

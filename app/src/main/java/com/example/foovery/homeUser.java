@@ -3,6 +3,7 @@ package com.example.foovery;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -17,6 +18,8 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SearchView;   ///////////////////////////////////////////////////////////
@@ -52,7 +55,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
 import org.w3c.dom.Text;
 
-public class homeUser extends FragmentActivity implements  OnMapReadyCallback {
+public class homeUser extends AppCompatActivity implements  OnMapReadyCallback {
 
     GoogleMap map;
     SupportMapFragment mapFragment;
@@ -87,7 +90,7 @@ public class homeUser extends FragmentActivity implements  OnMapReadyCallback {
                 source.setLatitude(17.4399);
                 source.setLongitude(78.4983);
                 double distance=currentLocation.distanceTo(source);
-                distance=distance/1000;
+                distance=distance/500;
                 Intent o = new Intent(homeUser.this, orderFoodU.class);
                 o.putExtra("key", distance);
                 o.putExtra("dest",currentLocation);
@@ -145,7 +148,7 @@ public class homeUser extends FragmentActivity implements  OnMapReadyCallback {
                 source.setLatitude(17.4399);
                 source.setLongitude(78.4983);
                 double distance=destination.distanceTo(source);
-                distance=distance/1000;
+                distance=distance/500;
                 Intent o = new Intent(homeUser.this, orderFoodU.class);
                 o.putExtra("key", distance);
                 o.putExtra("dest",destination);
@@ -228,6 +231,29 @@ public class homeUser extends FragmentActivity implements  OnMapReadyCallback {
                 checkGPS();
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.home_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menuLogout:
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                return true;
+            case R.id.menuOrder:
+                Intent i = new Intent(this, My_orders_users.class);
+                startActivity(i);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

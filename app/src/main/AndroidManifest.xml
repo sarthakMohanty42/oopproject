@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
-
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -16,42 +16,43 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Main2ActivityReceiver"></activity>
+        <activity android:name=".My_orders_delivery"/>
+        <activity android:name=".receiverNext"
+            android:label="Select Order"
+            android:theme="@style/AppThemeActionBar"/>
+        <activity android:name=".My_orders_users" />
+        <activity android:name=".Main2ActivityReceiver" />
         <activity android:name=".Main2Activity" />
         <activity android:name=".phoneAuthReceiver" />
         <activity android:name=".ReceiverConfirmation" />
-        <activity android:name=".phoneAuthUser"></activity>
+        <activity android:name=".phoneAuthUser" />
         <activity android:name=".orderFoodU" />
-        <activity android:name=".homeReceiver" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/map_key" />
-
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
-
+        <activity
+            android:name=".homeReceiver"
+            android:label="Aahaar"
+            android:theme="@style/AppThemeActionBar" />
         <activity
             android:name=".homeUser"
-            android:parentActivityName=".userSignin" />
-        <activity
-            android:name=".receiverSignIn"
-            android:parentActivityName=".receiverSignUp" />
-        <activity
-            android:name=".userSignin"
-            android:parentActivityName=".userSignUp" />
-        <activity
-            android:name=".userSignUp"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".receiverSignUp"
-            android:parentActivityName=".MainActivity" />
+            android:label="Aahaar"
+            android:theme="@style/AppThemeActionBar" />
+        <activity android:name=".receiverSignIn" />
+        <activity android:name=".userSignin" />
+        <activity android:name=".userSignUp" />
+        <activity android:name=".receiverSignUp" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/map_key" />
     </application>
 
 </manifest>

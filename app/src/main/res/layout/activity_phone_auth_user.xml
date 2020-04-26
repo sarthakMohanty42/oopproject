@@ -25,7 +25,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <Button
         android:id="@+id/button10"
         android:layout_width="0dp"
         android:layout_height="56dp"
@@ -48,7 +48,7 @@
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="120dp"
         android:layout_marginEnd="48dp"
         android:backgroundTint="#fff"
         android:ems="10"
@@ -57,10 +57,11 @@
         android:textColor="#fff"
         android:textColorHint="#fff"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button10" />
 
-    <TextView
+    <Button
         android:id="@+id/button11"
         android:layout_width="0dp"
         android:layout_height="56dp"
@@ -93,14 +94,29 @@
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="56dp"
-        android:text="Please wait, sending you the OTP .."
+        android:layout_marginTop="44dp"
+        android:textColor="#ffffff"
+        android:textColorHint="#fff"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button10" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_marginTop="120dp"
+
         android:textColor="#ffffff"
         android:textColorHint="#fff"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@+id/button10"/>
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

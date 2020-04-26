@@ -23,6 +23,7 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,6 +40,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,8 +56,7 @@ public class userSignUp extends AppCompatActivity {
     String userID;
     CallbackManager mCallbackManager;
     FirebaseAuth.AuthStateListener mAuthStateListener;
-    //Button loginButton;
-//    AccessTokenTracker mAccessTokenTracker;
+    AccessTokenTracker mAccessTokenTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,56 +71,45 @@ public class userSignUp extends AppCompatActivity {
         btnUserSignUp = findViewById(R.id.button5);
         btnAlreadySignIn = findViewById(R.id.button6);
         mFirebaseAuth = FirebaseAuth.getInstance();
+
         FacebookSdk.sdkInitialize(getApplicationContext());
+        mCallbackManager = CallbackManager.Factory.create();
 
-        //loginButton = findViewById(R.id.login_button);
-        //loginButton.setReadPermissions("email", "public_profile");
-        /*mCallbackManager = CallbackManager.Factory.create();
 
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.example.foovery",
-                    PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-
-        } catch (NoSuchAlgorithmException e) {
-
-        }
-
-        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+        findViewById(R.id.login_button).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d(TAG, "onSuccess" + loginResult);
-                handleFacebookToken(loginResult.getAccessToken());
-            }
+            public void onClick(View view) {
+                LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        Log.d(TAG, "onSuccess" + loginResult);
+                        handleFacebookToken(loginResult.getAccessToken());
+                    }
 
-            @Override
-            public void onCancel() {
-                Log.d(TAG, "onCancel");
-            }
+                    @Override
+                    public void onCancel() {
+                        Log.d(TAG, "onCancel");
+                    }
 
-            @Override
-            public void onError(FacebookException error) {
-                Log.d(TAG, "onError" + error);
+                    @Override
+                    public void onError(FacebookException error) {
+                        Log.d(TAG, "onError" + error);
+                    }
+                });
+                LoginManager.getInstance().logInWithReadPermissions(userSignUp.this, Arrays.asList("email", "public_profile"));
             }
         });
 
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+
+        /*mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user1 = firebaseAuth.getCurrentUser();
                 if (user1 != null) {
                     updateUI(user1);
-                } else {
-                    updateUI(null);
                 }
             }
-        };
+        };*/
 
         mAccessTokenTracker = new AccessTokenTracker() {
             @Override
@@ -128,7 +118,7 @@ public class userSignUp extends AppCompatActivity {
                     mFirebaseAuth.signOut();
                 }
             }
-        };*/
+        };
 
         btnSignOut.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -226,7 +216,7 @@ public class userSignUp extends AppCompatActivity {
         });
     }
 
-    /*private void handleFacebookToken(AccessToken token){
+    private void handleFacebookToken(AccessToken token){
         Log.d(TAG1,"handleFacebookToken" + token);
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
@@ -241,7 +231,7 @@ public class userSignUp extends AppCompatActivity {
                 else{
                     Log.d(TAG1,"SignIn Unsuccessful",task.getException());
                     Toast.makeText(userSignUp.this,"Authentication Failed",Toast.LENGTH_SHORT).show();
-                    updateUI(null);
+//                    updateUI(null);
                 }
             }
         });
@@ -285,18 +275,17 @@ public class userSignUp extends AppCompatActivity {
         }
     }
 
-    @Override
+    /*@Override
     protected void onStart() {
         super.onStart();
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
     }
-    @Override
-    protected void onStop(){
-        super.onStop();
 
-        if(mAuthStateListener != null){
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mAuthStateListener != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
     }*/
 }
-
